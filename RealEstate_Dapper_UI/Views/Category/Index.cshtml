@@ -8,7 +8,7 @@
     <div class="row g-4">
         <div class="col-12">
             <div class="bg-light rounded h-100 p-4">
-                <h6 class="mb-4">Kategori Listesi</h6><a class="btn btn-outline-info" href="#">Yeni Kategori Ekle</a>
+                <h6 class="mb-4">Kategori Listesi</h6>
                 <div class="table-responsive">
                     <table class="table">
                         <thead>
@@ -21,11 +21,14 @@
                             </tr>
                         </thead>
                         <tbody>
-
+                            @{
+                                int counter = 0;
+                            }
                             @foreach (var item in Model)
                             {
+                                counter++;
                                 <tr>
-                                    <th scope="row">@item.CategoryID</th>
+                                    <th scope="row">@counter</th>
                                     <td>@item.CategoryName</td>
                                     @if (item.CategoryStatus == true)
                                     {
@@ -35,13 +38,14 @@
                                     {
                                         <td>Pasif</td>
                                     }
-                                    <td><a href="#" class="btn btn-outline-success">Güncelle</a></td>
-                                    <td><a href="#" class="btn btn-outline-danger">Sil</a></td>
+                                    <td><a href="/Category/UpdateCategory/@item.CategoryID" class="btn btn-outline-success">Güncelle</a></td>
+                                    <td><a href="/Category/DeleteCategory/@item.CategoryID" class="btn btn-outline-danger">Sil</a></td>
                                 </tr>
                             }
 
                         </tbody>
                     </table>
+                    <a class="btn btn-outline-info" href="/Category/CreateCategory">Yeni Kategori Ekle</a>
                 </div>
             </div>
         </div>
