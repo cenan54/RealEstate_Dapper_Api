@@ -125,7 +125,7 @@ namespace RealEstate_Dapper_Api.Repositories.StatisticsRepositories
         
         public decimal LastAddedProductPrice()
         {
-            string query = "select top(1) Price from Product order by ProductID";
+            string query = "select top(1) Price from Product order by ProductID desc";
             using (var connection = _context.CreateConnection())
             {
                 var values = connection.QueryFirstOrDefault<decimal>(query);

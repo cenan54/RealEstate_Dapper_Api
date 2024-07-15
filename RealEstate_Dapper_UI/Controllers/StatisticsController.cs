@@ -38,14 +38,14 @@ namespace RealEstate_Dapper_UI.Controllers
             var client4 = _httpClientFactory.CreateClient();
             var responseMessage4 = await client4.GetAsync("https://localhost:7062/api/Statistics/AverageProductPriceByRent");
             var jsonData4 = await responseMessage4.Content.ReadAsStringAsync();
-            ViewBag.averageProductPriceByRent = jsonData4;
+            ViewBag.averageProductPriceByRent = (decimal.Parse(jsonData4.Replace(".", ""))/100000m).ToString("N2");
             #endregion
 
             #region AverageProductPriceBySale_5
             var client5 = _httpClientFactory.CreateClient();
             var responseMessage5 = await client5.GetAsync("https://localhost:7062/api/Statistics/AverageProductPriceBySale");
             var jsonData5 = await responseMessage5.Content.ReadAsStringAsync();
-            ViewBag.averageProductPriceBySale = jsonData5;
+            ViewBag.averageProductPriceBySale = (decimal.Parse(jsonData5.Replace(".",""))/100000m).ToString("N2");
             #endregion
 
             #region AverageRoomCount_6
@@ -94,7 +94,7 @@ namespace RealEstate_Dapper_UI.Controllers
             var client12 = _httpClientFactory.CreateClient();
             var responseMessage12 = await client12.GetAsync("https://localhost:7062/api/Statistics/LastAddedProductPrice");
             var jsonData12 = await responseMessage12.Content.ReadAsStringAsync();
-            ViewBag.lastAddedProductPrice = jsonData12;
+            ViewBag.lastAddedProductPrice = (decimal.Parse(jsonData12.Replace(".", "")) / 100m).ToString("N2");
             #endregion
 
             #region NewestBuildingYear_13
