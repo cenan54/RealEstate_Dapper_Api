@@ -1,8 +1,54 @@
-﻿
+﻿@model List<ResultServiceDto>
 @{
     ViewData["Title"] = "Index";
     Layout = "~/Views/Admin/Index.cshtml";
 }
 
-<h1>Index</h1>
+<div class="container-fluid pt-4 px-4">
+    <div class="row g-4">
+        <div class="col-12">
+            <div class="bg-light rounded h-100 p-4">
+                <h6 class="mb-4">Personel Listesi</h6>
+                <div class="table-responsive">
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <th scope="col">#</th>
+                                <th scope="col">Hizmet Başlığı</th>
+                                <th scope="col">Durum</th>
+                                <th scope="col">Güncelle</th>
+                                <th scope="col">Sil</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @{
+                                int counter = 0;
+                            }
+                            @foreach (var item in Model)
+                            {
+                                counter++;
+                                <tr>
+                                    <th scope="row">@counter</th>
+                                    <td>@item.ServiceName</td>
+                                    @if (item.ServiceStatus == true)
+                                    {
+                                        <td>Aktif</td>
+                                    }
+                                    else
+                                    {
+                                        <td>Pasif</td>
+                                    }
+                                    <td><a href="/Service/UpdateService/@item.ServiceID" class="btn btn-sm btn-outline-success">Güncelle</a></td>
+                                    <td><a href="/Service/DeleteService/@item.ServiceID" class="btn btn-sm btn-outline-danger">Sil</a></td>
+                                </tr>
+                            }
+
+                        </tbody>
+                    </table>
+                    <a class="btn btn-outline-info" href="/Service/CreateService">Yeni Hizmet Ekle</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
 
