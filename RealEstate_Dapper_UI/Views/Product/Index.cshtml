@@ -20,6 +20,7 @@
                                 <th scope="col">Kategori</th>
                                 <th scope="col">Fiyat</th>
                                 <th scope="col">Tür</th>
+                                <th scope="col">Günün Fırsatı</th>
                                 <th scope="col">Güncelle</th>
                                 <th scope="col">Sil</th>
                                 <th scope="col">Sitede Gör</th>
@@ -40,6 +41,19 @@
                                     <td>@item.categoryName</td>
                                     <td>@item.price</td>
                                     <td>@item.type</td>
+                                    <td>
+                                        @if(item.dealOfTheDay)
+                                        {
+                                            <a href="/Product/ProductDealOfTheDayStatusChangeToFalse/@item.productID" class="btn btn-sm btn-secondary">Pasif Yap</a>
+
+                                        }
+                                        @if(!item.dealOfTheDay)
+                                        {
+                                            <a href="/Product/ProductDealOfTheDayStatusChangeToTrue/@item.productID" class="btn btn-sm btn-outline-secondary">Aktifleştir</a>
+                                        }
+
+                                    </td>
+
                                     <td><a href="/Product/UpdateProduct/@item.productID" class="btn btn-sm btn-outline-success">Güncelle</a></td>
                                     <td><a href="/Product/DeleteProduct/@item.productID" class="btn btn-sm btn-outline-danger">Sil</a></td>
                                     <td><a href="/Product/ProductDetail/@item.productID" class="btn btn-sm btn-outline-primary">Sitede Gör</a></td>
