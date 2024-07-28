@@ -4,18 +4,67 @@
     Layout = "~/Views/Shared/_DefaultLayout.cshtml";
 }
 
-<section class="w3l-about-breadcrumb">
+@{
+    #region TimeTextFinder
+    string timeText;
+    TimeSpan timeDifference;
+
+    timeDifference = DateTime.Parse(DateTime.Now.ToString()) - DateTime.Parse(ViewBag.advertDate.ToString());
+
+    if (timeDifference.Days < 365)
+    {
+        if (timeDifference.Days < 30)
+        {
+            if (timeDifference.Days < 1)
+            {
+                if (timeDifference.Hours < 1)
+                {
+                    if (timeDifference.Minutes < 1)
+                    {
+                        timeText = "Şimdi";
+                    }
+                    else
+                    {
+                        timeText = timeDifference.Minutes + " dakika önce";
+                    }
+                }
+                else
+                {
+                    timeText = timeDifference.Hours + " saat önce";
+                }
+            }
+            else
+            {
+                timeText = timeDifference.Days + " gün önce";
+            }
+        }
+        else
+        {
+            int difference = timeDifference.Days / 30;
+            timeText = difference.ToString() + " ay önce";
+        }
+    }
+    else
+    {
+        int difference = timeDifference.Days / 365;
+        timeText = difference.ToString() + " yıl önce";
+    }
+    #endregion
+    DateOnly rawOnlyDate = DateOnly.FromDateTime(ViewBag.advertDate);
+}
+
+@* <section class="w3l-about-breadcrumb">
     <div class="breadcrumb-bg breadcrumb-bg-about pt-5">
         <div class="container pt-lg-5 py-3">
         </div>
     </div>
-</section>
+</section> *@
 <section class="w3l-breadcrumb">
     <div class="container">
         <ul class="breadcrumbs-custom-path">
-            <li><a href="index.html">Home</a></li>
-            <li class="active"><span class="fa fa-angle-right mx-2" aria-hidden="true"></span> Property</li>
-            <li class="active"><span class="fa fa-angle-right mx-2" aria-hidden="true"></span> property single</li>
+            <li><a href="/Default/Index/">Ana Sayfa</a></li>
+            <li class="active"><span class="fa fa-angle-right mx-2" aria-hidden="true"></span> İlanlar</li>
+            <li class="active"><span class="fa fa-angle-right mx-2" aria-hidden="true"></span> İlan Detayları</li>
         </ul>
     </div>
 </section>
@@ -27,8 +76,8 @@
                 <li>
                     <div class="listing-category"><span>@ViewBag.type</span></div>
                 </li>
-                <li><span class="fa fa-clock-o"></span> 5 months ago</li>
-                <li><span class="fa fa-eye"></span> 250 views</li>
+                <li><span class="fa fa-clock-o"></span> @timeText</li>
+                <li><span class="fa fa-eye"></span> 250 görüntülenme</li>
             </ul>
         </div>
         <div class="post-content">
@@ -39,9 +88,9 @@
                 <li>
                     <p>@ViewBag.address  @ViewBag.district/@ViewBag.city</p>
                 </li>
-                <li><span class="fa fa-bed"></span> 3 Beds</li>
+                <li><span class="fa fa-bed"></span> @ViewBag.bedCount Yatak Odası</li>
                 <li><span class="fa fa-bath"></span> @ViewBag.bathCount Banyo</li>
-                <li><span class="fa fa-share-square-o"></span> 1258 sqrft</li>
+                <li><span class="fa fa-share-square-o"></span> @ViewBag.size m²</li>
             </ul>
             <ul class="share-post">
                 <a href="#url" class="cost-estate m-o">₺@ViewBag.price</a>
@@ -50,56 +99,31 @@
         <div class="row">
             <div class="col-lg-8 w3l-news">
                 <div class="blog-single-post">
-                    <div class="single-post-image mb-5">
-                        <div class="owl-blog owl-carousel owl-theme">
-                            <div class="item">
-                                <div class="card">
-                                    <img src="~/starter/assets/images/p1.jpg" class="img-fluid radius-image" alt="image">
-                                </div>
-                            </div>
-                            <div class="item">
-                                <div class="card">
-                                    <img src="~/starter/assets/images/p2.jpg" class="img-fluid radius-image" alt="image">
-                                </div>
-                            </div>
-                            <div class="item">
-                                <div class="card">
-                                    <img src="~/starter/assets/images/p3.jpg" class="img-fluid radius-image" alt="image">
-                                </div>
-                            </div>
-                        </div>
-                    </div>
+
+                    @await Component.InvokeAsync("_PropertySliderComponentPartial")
+                   
 
                     <div class="single-post-content">
-                        <h3 class="post-content-title mb-3">Description</h3>
+                        <h3 class="post-content-title mb-3">Açıklama</h3>
                         <p class="mb-4">
-                            Lorem model text, and a search for 'lorem ipsum' will uncover many web sites still in their
-                            infancy. Various
-                            versions have evolved over the years, sometimes by accident, sometimes on purpose
-                            injected humour and the like.
+                            @ViewBag.description1
                         </p>
-                        <p class="mb-4">
-                            When you decide to put your business online it is a little bet tricky step
-                            for novice
-                            computer users because they want to keep data safe & secure.
-                            This problem developed from companies which did not take security seriously. Lorem ipsum
-                            dolor sit amet elit.
-                        </p>
+                       
                         <div class="single-bg-white">
-                            <h3 class="post-content-title mb-4">Property detail</h3>
+                            <h3 class="post-content-title mb-4">Detaylar</h3>
                             <ul class="details-list">
-                                <li><strong>Property id :</strong> PRPT12345 </li>
-                                <li><strong>Property size :</strong> 1200sqft </li>
-                                <li><strong>Rooms :</strong> 2 </li>
-                                <li><strong>Bedrooms :</strong> 5 </li>
-                                <li><strong>Bathrooms :</strong> 2 </li>
+                                <li><strong>İlan Kimliği :</strong> @ViewBag.productID </li>
+                                <li><strong>Alan Boyutu :</strong> @ViewBag.size m²</li>
+                                <li><strong>Oda Sayısı :</strong> @ViewBag.roomCount </li>
+                                <li><strong>Yatak Odası :</strong> @ViewBag.bedCount </li>
+                                <li><strong>Banyo Sayısı :</strong> @ViewBag.bathCount </li>
                                 <li><strong>Exterior material :</strong> Brick </li>
-                                <li><strong>Structure type :</strong> Wood </li>
-                                <li><strong>Garage size :</strong> 15 cars </li>
+                                <li><strong>Yapı Türü :</strong> Beton </li>
+                                <li><strong>Garaj Hacmi :</strong> @ViewBag.garageSize araba </li>
                                 <li><strong>Garages :</strong> 15 </li>
-                                <li><strong>Property Price :</strong> $ 750 </li>
-                                <li><strong>Built Year :</strong> 2018 </li>
-                                <li><strong>Avaiable from :</strong> Aug 2019 </li>
+                                <li><strong>Fiyat :</strong> ₺ @ViewBag.price </li>
+                                <li><strong>Yapım Yılı :</strong> @ViewBag.buildYear </li>
+                                <li><strong>İlan Tarihi :</strong> @rawOnlyDate.ToString("dd MMM yyyy") </li>
                             </ul>
                         </div>
                         <div class="single-bg-white">
@@ -133,77 +157,8 @@
                     </div>
                 </div>
             </div>
-            <div class="sidebar-side col-lg-4 col-md-12 col-sm-12 mt-lg-0 mt-5">
-                <aside class="sidebar">
-
-                    <!-- Popular Post Widget-->
-                    <div class="sidebar-widget popular-posts">
-                        <div class="sidebar-title">
-                            <h4>Contact an Agent</h4>
-                        </div>
-
-                        <article class="post">
-                            <figure class="post-thumb">
-                                <img src="~/starter/assets/images/l5.jpg" class="radius-image" alt="">
-                            </figure>
-                            <div class="text mb-0">
-                                <a href="#blog-single">
-                                    Company realty
-                                </a>
-                                <div class="post-info">+(12) 324 567 89</div>
-                                <div class="post-info">companyrealty@mail.com</div>
-                            </div>
-                        </article>
-                        <button type="submit" class="btn btn-primary btn-style w-100">Request details</button>
-                    </div>
-
-
-                    <!-- Popular Post Widget-->
-                    <div class="sidebar-widget popular-posts">
-                        <div class="sidebar-title">
-                            <h4>Popular Post</h4>
-                        </div>
-
-                        <article class="post">
-                            <figure class="post-thumb">
-                                <img src="~/starter/assets/images/l1.jpg" class="radius-image" alt="">
-                            </figure>
-                            <div class="text">
-                                <a href="#blog-single">
-                                    Why we are the best in the business
-                                </a>
-                                <div class="post-info">Sep 09, 2020 - 2 comments</div>
-                            </div>
-                        </article>
-
-                        <article class="post">
-                            <figure class="post-thumb">
-                                <img src="~/starter/assets/images/l2.jpg" class="radius-image" alt="">
-                            </figure>
-                            <div class="text">
-                                <a href="#blog-single">
-                                    Build your next landing page.
-                                </a>
-                                <div class="post-info">Sep 09, 2020 - 2 comments</div>
-                            </div>
-                        </article>
-
-                        <article class="post">
-                            <figure class="post-thumb">
-                                <img src="~/starter/assets/images/l3.jpg" class="radius-image" alt="">
-                            </figure>
-                            <div class="text">
-                                <a href="#blog-single">
-                                    Simply the best. Better than the rest.
-                                </a>
-                                <div class="post-info">Sep 10, 2020 - 2 comments</div>
-                            </div>
-                        </article>
-
-                    </div>
-
-                </aside>
-            </div>
+            @await Component.InvokeAsync("_PropertyAppUserComponentPartial")
+           
         </div>
     </div>
 </section>
