@@ -27,6 +27,24 @@ namespace RealEstate_Dapper_UI.Controllers
             return View();
         }
 
+        public async Task<IActionResult> PropertyListWithSearch(string searchKeyValue, int propertyCategoryId, string city)
+        {
+            ViewBag.v = TempData["word"]; 
+            ViewBag.y = TempData["word1"]; 
+            searchKeyValue = "daire";
+            propertyCategoryId = 1;
+            city = "Sakarya";
+            var client = _httpClientFactory.CreateClient();
+            var responseMessage = await client.GetAsync($"https://localhost:7062/api/Products/ResultProductWithSearchList?searchKeyValue={searchKeyValue}&propertyCategoryId={propertyCategoryId}&city={city}");
+            if (responseMessage.IsSuccessStatusCode)
+            {
+                var jsonData = await responseMessage.Content.ReadAsStringAsync();
+                var values = JsonConvert.DeserializeObject<List<ResultProductWithSearchListDto>>(jsonData);
+                return View(values);
+            }
+            return View();
+        }
+
         [HttpGet]
         public async Task<IActionResult> PropertySingle(int id)
         {
@@ -46,6 +64,7 @@ namespace RealEstate_Dapper_UI.Controllers
                 var values2 = JsonConvert.DeserializeObject<GetProductDetailByIdDto>(jsonData2);
 
                 #region ViewBags1ForProduct
+
                 ViewBag.productID = values.productID;
                 ViewBag.title1 = values.title;
                 ViewBag.price = values.price.ToString("N2");
@@ -60,12 +79,15 @@ namespace RealEstate_Dapper_UI.Controllers
                 #endregion
 
                 #region ViewBags2ForProductDetails
+
                 ViewBag.bathCount = values2.BathCount;
                 ViewBag.bedCount = values2.BedRoomCount;
                 ViewBag.size = values2.ProductSize;
                 ViewBag.roomCount = values2.RoomCount;
                 ViewBag.garageSize = values2.GarageSize;
                 ViewBag.buildYear = values2.BuildYear;
+                ViewBag.location = values2.Location;
+                ViewBag.videoUrl = values2.VideoUrl;
                 
                 #endregion
 

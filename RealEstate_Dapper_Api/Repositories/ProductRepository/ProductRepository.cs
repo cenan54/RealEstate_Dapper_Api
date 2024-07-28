@@ -142,5 +142,19 @@ namespace RealEstate_Dapper_Api.Repositories.ProductRepository
                 return values.FirstOrDefault();
             }
         }
+
+        public async Task<List<ResultProductWithSearchListDto>> ResultProductWithSearchList(string searchKeyValue, int propertyCategoryId, string city)
+        {
+            string query = "select * from Product where LOWER(Title) like LOWER('%"+ searchKeyValue + "%') and ProductCategory=@propertyCategoryId and LOWER(City) like lower('%" + city + "%')";
+            var parameters = new DynamicParameters();
+            //parameters.Add("@searchKeyValue", searchKeyValue);
+            parameters.Add("@propertyCategoryId", propertyCategoryId);
+            //parameters.Add("@city", city);
+            using (var connection = _context.CreateConnection())
+            {
+                var values = await connection.QueryAsync<ResultProductWithSearchListDto>(query, parameters);
+                return values.ToList();
+            }
+        }
     }
 }
