@@ -1,20 +1,32 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Options;
 using Newtonsoft.Json;
 using RealEstate_Dapper_UI.Dtos.CategoryDtos;
+using RealEstate_Dapper_UI.Models;
 
 namespace RealEstate_Dapper_UI.Controllers
 {
     public class DefaultController : Controller
     {
         private readonly IHttpClientFactory _httpClientFactory;
+        private readonly ApiSettings _apiSettings;
 
-        public DefaultController(IHttpClientFactory httpClientFactory)
+        public DefaultController(IHttpClientFactory httpClientFactory, IOptions<ApiSettings> apiSettings)
         {
             _httpClientFactory = httpClientFactory;
+            _apiSettings = apiSettings.Value;
         }
-
-        public IActionResult Index()
+       
+        public async Task<IActionResult> Index()
         {
+            var client = _httpClientFactory.CreateClient();
+            var responseMessage = await client.GetAsync(_apiSettings.BaseUrl+"Categories");
+            if (responseMessage.IsSuccessStatusCode)
+            {
+                var jsonData = await responseMessage.Content.ReadAsStringAsync();
+                var values = JsonConvert.DeserializeObject<List<ResultCategoryDto>>(jsonData);
+                return View(values);
+            }
             return View();
         }
 
@@ -33,10 +45,11 @@ namespace RealEstate_Dapper_UI.Controllers
         }
 
         [HttpPost]
-        public IActionResult PartialSearch(string p, string y)
+        public IActionResult PartialSearch(string searchKeyValue, int propertyCategoryId, string city)
         {
-            TempData["word"] = p;
-            TempData["word1"] = y;
+            TempData["searchKeyValue"] = searchKeyValue;
+            TempData["propertyCategoryId"] = propertyCategoryId;
+            TempData["city"] = city;
             return RedirectToAction("PropertyListWithSearch", "Property");
         }
     }

@@ -5,9 +5,9 @@ namespace RealEstate_Dapper_Api.Repositories.ToDoListRepositories
     public interface IToDoListRepository
     {
         Task<List<ResultToDoListDto>> GetAllToDoListAsync();
-        void CreateToDoList(CreateToDoListDto toDoListDto);
-        void DeleteToDoList(int id);
-        void UpdateToDoList(UpdateToDoListDto toDoListDto);
+        Task CreateToDoList(CreateToDoListDto toDoListDto);
+        Task DeleteToDoList(int id);
+        Task UpdateToDoList(UpdateToDoListDto toDoListDto);
         Task<GetByIdToDoListDto> GetToDoList(int id);
     }
 }
