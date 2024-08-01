@@ -2,6 +2,7 @@
 using Newtonsoft.Json;
 using RealEstate_Dapper_UI.Dtos.ProductDetailDtos;
 using RealEstate_Dapper_UI.Dtos.ProductDtos;
+using System.Security.Policy;
 
 namespace RealEstate_Dapper_UI.Controllers
 {
@@ -44,10 +45,10 @@ namespace RealEstate_Dapper_UI.Controllers
             return View();
         }
 
-        [HttpGet]
-        public async Task<IActionResult> PropertySingle(int id)
+        [HttpGet("property/{slug}/{id}")]
+        public async Task<IActionResult> PropertySingle(string slug, int id)
         {
-            id = 1;
+            ViewBag.i = id;
             var client = _httpClientFactory.CreateClient();
             var responseMessage = await client.GetAsync("https://localhost:7062/api/Products/GetProductByProductId?id="+id);
 
@@ -74,6 +75,7 @@ namespace RealEstate_Dapper_UI.Controllers
                 ViewBag.advertDate = values.advertisementDate;
                 ViewBag.description1 = values.description;
                 
+                
                 //ViewBag.datediff = values.adv;
                 #endregion
 
@@ -90,9 +92,26 @@ namespace RealEstate_Dapper_UI.Controllers
                 
                 #endregion
 
+                string slugFromTitle = CreateSlug(values.title);
+                ViewBag.slugUrl = slugFromTitle;
+
                 return View();
             }
+
+            
             return View();
         }
+
+        private string CreateSlug(string title)
+        {
+            title = title.ToLowerInvariant(); // Küçük harfe çevir
+            title = title.Replace(" ","-"); // Boşlukları tire ile değiştir
+            title = System.Text.RegularExpressions.Regex.Replace(title, @"[^a-z0-9\s-]", ""); // Geçersizkarakterlerikaldır
+            title = System.Text.RegularExpressions.Regex.Replace(title, @"\s+", " ").Trim(); // Birden fazla boşluğu tek boşluğa indir ve kenar boşluklarını
+            title = System.Text.RegularExpressions.Regex.Replace(title, @"\s", "-"); // Boşlukları tire ile değiştir
+
+            return title;
+        }
+
     }
 }
