@@ -12,5 +12,11 @@
         public string Type { get; set; }
         public string Address { get; set; }
         public bool DealOfTheDay { get; set; }
+        public string Description { get; set; }
+        public DateTime AdvertisementDate { get; set; }
+        public string SlugUrl { get; set; }
+
+       
+
     }
 }
