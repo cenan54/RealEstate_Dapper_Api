@@ -7,27 +7,27 @@ ASP.NET Core 8.0 Web API ve ASP.NET Core 8.0 MVC kullanılarak 2 katmanlı bir m
  edilir. Wep API tarafında ORM aracı olarak Dapper kullanılmıştır.
 
    ## Kullanılan Teknolojiler
-Asp.Net Core 8.0 MVC
-Asp.Net Core Web API
-MSSQL
-Dapper ORM
-SignalR
-Json Web Token
-Html
-Css
-JavaScript
-Bootstrap
-C#
-Swagger
+Asp.Net Core 8.0 MVC, 
+Asp.Net Core Web API, 
+MSSQL, 
+Dapper ORM, 
+SignalR, 
+Json Web Token, 
+Html, 
+Css, 
+JavaScript, 
+Bootstrap, 
+C#, 
+Swagger 
 
 
  ## Öne Çıkan Özellikler
-Tüm ilanları listeleyebilme
-Şehir, Kategori ve Başlığa göre ilan arama çubuğu
-SignalR ile anlık mesaj bildirimi
-Admin Paneli
-Json Web Token ile kimlik güvenliği
-İlan istatistiklerini görüntüleme
+Tüm ilanları listeleyebilme, 
+Şehir, Kategori ve Başlığa göre ilan arama çubuğu, 
+SignalR ile anlık mesaj bildirimi, 
+Admin Paneli, 
+Json Web Token ile kimlik güvenliği, 
+İlan istatistiklerini görüntüleme 
 
 
 ## Uygulamanın Ekran Görüntüleri
